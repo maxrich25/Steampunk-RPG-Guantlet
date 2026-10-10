@@ -1,10 +1,10 @@
-import { TICK } from "./config.js?v=25";
-import { bindAudioUnlock, unlockAudio, startMusic } from "./audio.js?v=25";
-import { createInput } from "./input.js?v=25";
-import { createGame } from "./game.js?v=25";
-import { loadSprites } from "./sprites.js?v=25";
-import { createWorld } from "./world.js?v=25";
-import { createHud } from "./hud.js?v=25";
+import { TICK } from "../../block-run-25d/js/config.js?v=25";
+import { bindAudioUnlock, unlockAudio, startMusic } from "../../block-run-25d/js/audio.js?v=25";
+import { createInput } from "../../block-run-25d/js/input.js?v=25";
+import { createGame } from "../../block-run-25d/js/game.js?v=25";
+import { createHud } from "../../block-run-25d/js/hud.js?v=25";
+import { loadArt } from "./art.js?v=25";
+import { createWorld } from "./draw.js?v=25";
 
 const canvas = document.getElementById("scene");
 const pauseBtn = document.getElementById("btn-pause");
@@ -14,7 +14,7 @@ bindAudioUnlock();
 
 const input = createInput(document.getElementById("app"));
 const game = createGame();
-const hud = createHud();
+const hud = createHud({ subtitle: "CLASSIC NIGHT BLOCK" });
 
 function stopHudClick(e) {
   e.preventDefault();
@@ -42,11 +42,11 @@ let acc = 0;
 let last = performance.now();
 let running = true;
 let lastProject = null;
-let view = { camGameX: 80, halfWidth: 90 };
+let view = { camGameX: 80, halfWidth: 128 };
 
 try {
-  const sprites = await loadSprites();
-  world = createWorld(canvas, sprites);
+  const art = await loadArt();
+  world = createWorld(canvas, art);
 } catch (err) {
   const status = document.getElementById("status");
   if (status) status.textContent = String(err && err.message ? err.message : err);
